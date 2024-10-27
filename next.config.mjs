@@ -4,16 +4,14 @@ const nextConfig = {
     images: {
       unoptimized: true,
     },
-    // Replace 'portfolio-2024' with your actual repository name
-    basePath: process.env.NODE_ENV === 'production' ? '/manuportfolio' : '',
+    basePath: '/manuportfolio',
+    assetPrefix: '/manuportfolio/',
     // Disable source maps in production
     productionBrowserSourceMaps: false,
-    // Add this to resolve the transpile error
-    transpilePackages: [],
-    // Add this if you're having module resolution issues
-    experimental: {
-      esmExternals: 'loose'
-    }
-  }
-  
-  module.exports = nextConfig
+    distDir: 'out',
+    trailingSlash: true,
+    skipTrailingSlashRedirect: true,
+    // Remove exportPathMap as it's not compatible with app directory
+};
+
+export default nextConfig;
