@@ -19,13 +19,17 @@ export default function Sidebar({ categories }: Props) {
 
   return (
     <>
-      {/* Mobile Menu Button */}
+      {/* Mobile Menu Button - moved to left */}
       <button
         onClick={toggleMenu}
-        className="lg:hidden fixed top-4 right-4 z-50 p-2 rounded-md hover:bg-gray-100"
+        className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-md hover:bg-gray-100"
         aria-label={isMenuOpen ? "Close menu" : "Open menu"}
       >
-        {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        {isMenuOpen ? (
+          <X size={24} className="text-gray-900" />
+        ) : (
+          <Menu size={24} className="text-gray-900" />
+        )}
       </button>
 
       {/* Overlay for mobile menu */}
@@ -39,7 +43,7 @@ export default function Sidebar({ categories }: Props) {
       {/* Navigation */}
       <nav
         className={`
-          fixed lg:static w-64 h-full bg-white z-40 transition-transform duration-300
+          fixed lg:static w-64 h-full bg-gray-50 z-40 transition-transform duration-300
           ${isMenuOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
           pt-12 px-12
         `}
