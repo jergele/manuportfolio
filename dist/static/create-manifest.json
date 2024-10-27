@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "createdAt": "2024-10-27T11:23:56.700Z",
+  "workspaces": [
+    {
+      "name": "default",
+      "title": "portfolio-site",
+      "basePath": "/",
+      "dataset": "production",
+      "schema": "8850e0af.create-schema.json"
+    }
+  ]
+}

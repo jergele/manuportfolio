@@ -13,6 +13,7 @@ export default defineConfig({
   title: "portfolio-site",
   projectId,
   dataset,
+  // Remove basePath when deploying to sanity.studio
   plugins: [deskTool(), visionTool()],
   schema,
 });
