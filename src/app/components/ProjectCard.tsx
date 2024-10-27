@@ -1,3 +1,5 @@
+"use client";
+import React from "react";
 import { urlFor } from "@/app/lib/sanity";
 import { Plus } from "lucide-react";
 import { Project } from "../types";

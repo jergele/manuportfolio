@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build && type nul > out/.nojekyll",
+    "build": "next build",
+    "postbuild": "type nul > out/.nojekyll",
     "start": "next start",
     "lint": "next lint",
     "clean": "rimraf .next && rimraf node_modules/.cache",
@@ -28,10 +29,14 @@
     "styled-components": "^6.1.13"
   },
   "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "15.0.1",
     "postcss": "^8",
     "rimraf": "^5.0.5",
-    "tailwindcss": "^3.4.1"
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
   }
 }

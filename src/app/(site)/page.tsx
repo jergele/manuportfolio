@@ -1,3 +1,4 @@
+import React from 'react';
 import ProjectGrid from "@/app/components/ProjectGrid";
 import { client } from "@/app/lib/sanity";
 
