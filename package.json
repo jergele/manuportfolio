@@ -9,9 +9,9 @@
     "lint": "next lint",
     "clean": "rimraf .next && rimraf node_modules/.cache",
     "clean:all": "rimraf .next && rimraf node_modules && npm install",
-    "sanity": "sanity dev",
-    "sanity:deploy": "sanity deploy",
-    "sanity:start": "sanity start"
+    "sanity": "cd src/sanity && sanity",
+    "sanity:deploy": "cd src/sanity && sanity deploy",
+    "sanity:studio": "cd src/sanity && sanity studio"
   },
   "dependencies": {
     "@portabletext/react": "^3.1.0",
