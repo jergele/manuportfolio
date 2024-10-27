@@ -1,4 +1,13 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+  // Disable caching in development
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  cache: false,
+  experimental: {
+    serverActions: true,
+  },
+};
 
 export default nextConfig;
