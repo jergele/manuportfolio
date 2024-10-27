@@ -6,15 +6,38 @@ const nextConfig = {
     },
     // Update basePath to match your repository name
     basePath: '/manuportfolio',
-    assetPrefix: '/manuportfolio/',  // Add this back
+    assetPrefix: '/manuportfolio/',
     // Disable source maps in production
     productionBrowserSourceMaps: false,
     distDir: 'dist',
     trailingSlash: true,
     skipTrailingSlashRedirect: true,
-    // Add this to ensure styles are included
-    webpack: (config) => {
-      config.resolve.fallback = { fs: false };
+    // Add this to ensure all chunks are included
+    webpack: (config, { isServer }) => {
+      if (!isServer) {
+        config.resolve.fallback = {
+          fs: false,
+          net: false,
+          tls: false,
+        };
+      }
+      config.optimization = {
+        ...config.optimization,
+        splitChunks: {
+          chunks: 'all',
+          minSize: 20000,
+          maxSize: 244000,
+          cacheGroups: {
+            default: false,
+            vendors: false,
+            commons: {
+              name: 'commons',
+              chunks: 'all',
+              minChunks: 2,
+            },
+          },
+        },
+      };
       return config;
     },
 };
