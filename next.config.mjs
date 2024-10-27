@@ -1,13 +1,19 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    output: 'export',  // Enable static exports
+    output: 'export',
     images: {
-      unoptimized: true, // Required for static export
+      unoptimized: true,
     },
-    // Add your repository name here if deploying to GitHub Pages
-    basePath: '/manuportfolio', // e.g., '/portfolio-2024'
+    // Replace 'portfolio-2024' with your actual repository name
+    basePath: process.env.NODE_ENV === 'production' ? '/manuportfolio' : '',
     // Disable source maps in production
     productionBrowserSourceMaps: false,
+    // Add this to resolve the transpile error
+    transpilePackages: [],
+    // Add this if you're having module resolution issues
+    experimental: {
+      esmExternals: 'loose'
+    }
   }
   
   module.exports = nextConfig
