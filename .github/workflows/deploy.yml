@@ -2,7 +2,9 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ "main", "master" ]  # Now checks for both main and master branches
+    branches: [ "main", "master" ]
+  repository_dispatch:
+    types: [sanity_update]
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
@@ -51,3 +53,10 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
+
+      - name: Log webhook details
+        if: github.event_name == 'repository_dispatch'
+        run: |
+          echo "Triggered by Sanity update"
+          echo "Type: ${{ github.event.client_payload.type }}"
+          echo "ID: ${{ github.event.client_payload.id }}"

@@ -4,9 +4,9 @@ const nextConfig = {
     images: {
       unoptimized: true,
     },
-    // Update basePath to match your repository name
-    basePath: '/manuportfolio',
-    assetPrefix: '/manuportfolio/',
+    // Use basePath only in production (GitHub Pages)
+    basePath: process.env.NODE_ENV === 'production' ? '/manuportfolio' : '',
+    assetPrefix: process.env.NODE_ENV === 'production' ? '/manuportfolio/' : '',
     // Disable source maps in production
     productionBrowserSourceMaps: false,
     distDir: 'dist',

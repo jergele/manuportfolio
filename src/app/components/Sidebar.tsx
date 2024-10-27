@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react"; // Import icons for hamburger menu
+import { Menu, X } from "lucide-react";
 import { Category } from "../types";
 
 type Props = {
@@ -10,16 +10,41 @@ type Props = {
 };
 
 export default function Sidebar({ categories }: Props) {
-  const pathname = usePathname();
+  const pathname = usePathname() || '';
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const isActive = (path: string) => {
+    // For homepage
+    if (path === '/') {
+      return pathname === '/';
+    }
+
+    // For "Taideprojektit" header
+    if (path === 'taideprojektit') {
+      return pathname.startsWith('/projects');
+    }
+
+    // For "Kaikki työt"
+    if (path === '/projects') {
+      return pathname === '/projects';
+    }
+
+    // For category pages
+    if (path.startsWith('/projects/category/')) {
+      return pathname === path;
+    }
+
+    // For other pages (about, contact)
+    return pathname === path;
+  };
+
   return (
     <>
-      {/* Mobile Menu Button - moved to left */}
+      {/* Mobile Menu Button */}
       <button
         onClick={toggleMenu}
         className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-md hover:bg-gray-100"
@@ -51,7 +76,7 @@ export default function Sidebar({ categories }: Props) {
         <Link
           href="/"
           className={`block text-3xl font-light mb-12 transition-colors tracking-wide whitespace-nowrap ${
-            pathname === "/" 
+            isActive('/') 
               ? "text-black" 
               : "text-gray-900 hover:text-black"
           }`}
@@ -66,7 +91,7 @@ export default function Sidebar({ categories }: Props) {
             <Link
               href="/projects"
               className={`relative inline-block font-light text-base tracking-wide mb-4 ${
-                pathname.startsWith("/projects")
+                isActive('taideprojektit')
                   ? "text-black after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px] after:bg-black"
                   : "text-gray-700 hover:text-black"
               }`}
@@ -78,7 +103,7 @@ export default function Sidebar({ categories }: Props) {
               <Link
                 href="/projects"
                 className={`relative inline-block text-base font-light tracking-wide ${
-                  pathname === "/projects"
+                  isActive('/projects')
                     ? "text-black after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px] after:bg-black"
                     : "text-gray-700 hover:text-black"
                 }`}
@@ -93,7 +118,7 @@ export default function Sidebar({ categories }: Props) {
                     key={category._id}
                     href={categoryUrl}
                     className={`relative inline-block text-base font-light tracking-wide ${
-                      pathname === categoryUrl
+                      isActive(categoryUrl)
                         ? "text-black after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px] after:bg-black"
                         : "text-gray-700 hover:text-black"
                     }`}
@@ -108,7 +133,7 @@ export default function Sidebar({ categories }: Props) {
           <Link
             href="/about"
             className={`relative inline-block text-base font-light tracking-wide ${
-              pathname === "/about"
+              isActive('/about')
                 ? "text-black after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px] after:bg-black"
                 : "text-gray-700 hover:text-black"
             }`}
@@ -119,7 +144,7 @@ export default function Sidebar({ categories }: Props) {
           <Link
             href="/contact"
             className={`relative inline-block text-base font-light tracking-wide ${
-              pathname === "/contact"
+              isActive('/contact')
                 ? "text-black after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px] after:bg-black"
                 : "text-gray-700 hover:text-black"
             }`}
