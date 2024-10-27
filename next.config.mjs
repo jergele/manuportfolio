@@ -6,12 +6,17 @@ const nextConfig = {
     },
     // Update basePath to match your repository name
     basePath: '/manuportfolio',
-    // Remove assetPrefix as it's not needed with basePath
+    assetPrefix: '/manuportfolio/',  // Add this back
     // Disable source maps in production
     productionBrowserSourceMaps: false,
-    distDir: 'dist',  // Change from 'out' to 'dist'
+    distDir: 'dist',
     trailingSlash: true,
     skipTrailingSlashRedirect: true,
+    // Add this to ensure styles are included
+    webpack: (config) => {
+      config.resolve.fallback = { fs: false };
+      return config;
+    },
 };
 
 export default nextConfig;

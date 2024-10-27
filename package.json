@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build && mkdir -p out && type nul > out/.nojekyll || touch out/.nojekyll",
+    "build": "next build && cp -r ./public/* ./dist/ || xcopy .\\public\\* .\\dist\\ /E/H/C/I",
     "start": "next start",
     "lint": "next lint",
     "clean": "rimraf .next && rimraf node_modules/.cache",
