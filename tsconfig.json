@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "es2015",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -23,15 +19,11 @@
         "name": "next"
       }
     ],
+    "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["./src/*"]
     },
-    "typeRoots": [
-      "./node_modules/@types",
-      "./src/types"
-    ]
+    "typeRoots": ["./node_modules/@types", "./src/types"]
   },
   "include": [
     "**/*.ts",
@@ -41,7 +33,5 @@
     "dist/types/**/*.ts",
     "src/types/**/*.d.ts"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }
