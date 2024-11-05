@@ -1,0 +1,9 @@
+{
+  "buildCommand": "next build",
+  "framework": "nextjs",
+  "installCommand": "npm install",
+  "env": {
+    "NEXT_PUBLIC_SANITY_PROJECT_ID": "@next_public_sanity_project_id",
+    "NEXT_PUBLIC_SANITY_DATASET": "@next_public_sanity_dataset"
+  }
+}

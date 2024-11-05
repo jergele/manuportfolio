@@ -3,8 +3,7 @@ import React from "react";
 import { urlFor } from "@/app/lib/sanity";
 import { X } from "lucide-react";
 import { Project } from "../types";
-import OptimizedImage from './OptimizedImage'
-
+import OptimizedImage from "./OptimizedImage";
 
 type Props = {
   project: Project;
@@ -41,8 +40,12 @@ export default function ProjectModal({ project, onClose }: Props) {
               <h2 className="text-2xl font-bold">{project.title}</h2>
               <div className="flex gap-2 text-gray-600 mt-1">
                 <span>{project.year}</span>
-                <span>•</span>
-                <span>{project.category.title}</span>
+                {project.category && (
+                  <>
+                    <span>•</span>
+                    <span>{project.category.title}</span>
+                  </>
+                )}
               </div>
             </div>
 

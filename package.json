@@ -3,22 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build && cp -r ./public/* ./dist/ || xcopy .\\public\\* .\\dist\\ /E/H/C/I",
+    "dev": "next dev",
+    "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "clean": "rimraf .next && rimraf node_modules/.cache",
-    "clean:all": "rimraf .next && rimraf node_modules && npm install",
-    "sanity": "cd src/sanity && sanity",
-    "sanity:deploy": "cd src/sanity && sanity deploy",
-    "sanity:studio": "cd src/sanity && sanity studio"
+    "lint": "next lint"
   },
   "dependencies": {
     "@portabletext/react": "^3.1.0",
     "@sanity/client": "^6.22.2",
-    "@sanity/image-url": "^1.0.2",
+    "@sanity/image-url": "^1.1.0",
     "@sanity/vision": "^3.62.2",
     "framer-motion": "^11.11.10",
+    "lru-cache": "^10.2.0",
     "lucide-react": "^0.453.0",
     "next": "15.0.1",
     "next-sanity": "^9.8.7",
@@ -31,11 +27,12 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "autoprefixer": "^10.4.17",
     "eslint": "^8",
     "eslint-config-next": "15.0.1",
-    "postcss": "^8",
+    "postcss": "^8.4.35",
     "rimraf": "^5.0.5",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "typescript": "5.6.3"
   }
 }
