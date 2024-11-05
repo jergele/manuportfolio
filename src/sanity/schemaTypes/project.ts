@@ -1,4 +1,4 @@
-export default {
+const project = {
   name: "project",
   title: "Project",
   type: "document",
@@ -7,7 +7,6 @@ export default {
       name: "title",
       title: "Title",
       type: "string",
-      validation: (Rule: any) => Rule.required(),
     },
     {
       name: "slug",
@@ -27,19 +26,16 @@ export default {
       validation: (Rule: any) => Rule.required(),
     },
     {
-        name: 'mainImage',
-        title: 'Main image',
-        type: 'image',
-        options: {
-          hotspot: true, // Enables UI for selecting focal point
-          // Add metadata for better optimization
-          metadata: ['blurhash', 'lqip', 'palette'],
-          // Add image preprocessing
-          storeOriginalFilename: false, // Don't store original filename
-          accept: 'image/jpeg, image/png, image/webp', // Limit file types
-        },
-        validation: (Rule: any) => Rule.required()
-  
+      name: "mainImage",
+      title: "Main image",
+      type: "image",
+      options: {
+        hotspot: true,
+        metadata: ["blurhash", "lqip", "palette"],
+        storeOriginalFilename: false,
+        accept: "image/jpeg, image/png, image/webp",
+      },
+      validation: (Rule: any) => Rule.required(),
     },
     {
       name: "year",
@@ -60,24 +56,26 @@ export default {
           type: "object",
           fields: [
             {
-              name: 'image',
-              title: 'Image',
-              type: 'image',
+              name: "image",
+              title: "Image",
+              type: "image",
               options: {
                 hotspot: true,
-                metadata: ['blurhash', 'lqip', 'palette'],
+                metadata: ["blurhash", "lqip", "palette"],
                 storeOriginalFilename: false,
-                accept: 'image/jpeg, image/png, image/webp',
-              }
+                accept: "image/jpeg, image/png, image/webp",
+              },
             },
             {
-              name: 'caption',
-              title: 'Caption',
-              type: 'string'
-            }
+              name: "caption",
+              title: "Caption",
+              type: "string",
+            },
           ],
         },
       ],
     },
   ],
 };
+
+export default project;

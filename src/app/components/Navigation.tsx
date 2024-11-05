@@ -36,16 +36,9 @@ export default function Navigation() {
             >
               Työt
             </Link>
-            <Link
-              href="/contact"
-              className={`text-lg ${
-                isActive("/contact")
-                  ? "text-gray-800"
-                  : "text-gray-500 hover:text-gray-700"
-              }`}
-            >
-              Yhteystiedot
-            </Link>
+            {/* Remove or comment out these links
+            <Link href="/about">About</Link>
+            <Link href="/contact">Contact</Link> */}
           </div>
         </div>
       </div>

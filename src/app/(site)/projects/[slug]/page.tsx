@@ -1,14 +1,17 @@
 import { Metadata } from "next";
 import { client } from "@/app/lib/sanity";
 import { Project } from "@/app/types";
+import React from "react";
 
-type Props = {
-  params: {
-    slug: string;
-  };
-};
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
+type Params = Promise<{ slug: string }>;
 
-export default async function ProjectPage({ params }: Props) {
+export default async function Page(props: {
+  params: Params;
+  searchParams: SearchParams;
+}) {
+  const params = await props.params;
+  const searchParams = await props.searchParams;
   const { slug } = params;
 
   const project = await client.fetch<Project>(
@@ -39,7 +42,11 @@ export default async function ProjectPage({ params }: Props) {
   return <div>{/* Your project page content */}</div>;
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata(props: {
+  params: Params;
+  searchParams: SearchParams;
+}): Promise<Metadata> {
+  const params = await props.params;
   const { slug } = params;
 
   const project = await client.fetch(

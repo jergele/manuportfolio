@@ -4,7 +4,16 @@ import OptimizedImage from "@/app/components/OptimizedImage";
 import Link from "next/link";
 import ProjectGrid from "@/app/components/ProjectGrid";
 
-export default async function Home() {
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
+type Params = Promise<{}>;
+
+export default async function Page(props: {
+  params: Params;
+  searchParams: SearchParams;
+}) {
+  const params = await props.params;
+  const searchParams = await props.searchParams;
+
   const query = groq`
     *[_type == "project"] | order(_createdAt desc)[0...3] {
       _id,

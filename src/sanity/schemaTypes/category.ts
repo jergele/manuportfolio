@@ -1,4 +1,4 @@
-export default {
+const category = {
   name: "category",
   title: "Category",
   type: "document",
@@ -7,7 +7,6 @@ export default {
       name: "title",
       title: "Title",
       type: "string",
-      validation: (Rule: any) => Rule.required(),
     },
     {
       name: "slug",
@@ -15,9 +14,9 @@ export default {
       type: "slug",
       options: {
         source: "title",
-        maxLength: 96,
       },
-      validation: (Rule: any) => Rule.required(),
     },
   ],
 };
+
+export default category;

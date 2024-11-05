@@ -6,6 +6,7 @@ export interface Project {
   description?: string;
   year: string;
   slug: string;
+  mainImage?: any;
   images?: {
     image: any;
     caption?: string;
