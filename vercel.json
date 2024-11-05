@@ -13,5 +13,11 @@
     "env": {
       "NEXT_TELEMETRY_DISABLED": "1"
     }
-  }
+  },
+  "builds": [
+    {
+      "src": "src/app/**/*.{js,jsx,ts,tsx}",
+      "use": "@vercel/next"
+    }
+  ]
 }
