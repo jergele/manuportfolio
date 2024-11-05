@@ -1,57 +1,59 @@
+import { Metadata } from "next";
 import { client } from "@/app/lib/sanity";
-import { groq } from "next-sanity";
-import { notFound } from "next/navigation";
+import { Project } from "@/app/types";
 
-interface Props {
-  params: { slug: string };
-}
+type Props = {
+  params: {
+    slug: string;
+  };
+};
 
 export default async function ProjectPage({ params }: Props) {
   const { slug } = params;
 
-  const query = groq`
+  const project = await client.fetch<Project>(
+    `
     *[_type == "project" && slug.current == $slug][0] {
       _id,
       title,
-      slug,
-      mainImage,
-      year,
       description,
-      category->,
+      year,
+      "slug": slug.current,
       images[] {
-        image,
+        "image": image.asset->,
         caption
+      },
+      category->{
+        title,
+        "slug": slug.current
       }
     }
-  `;
+  `,
+    { slug }
+  );
 
-  try {
-    const project = await client.fetch(query, { slug });
-
-    if (!project) {
-      return notFound();
-    }
-
-    return (
-      <main className="pt-14 px-8">
-        <h1 className="text-3xl font-bold mb-8">{project.title}</h1>
-        {/* Add your project detail layout here */}
-      </main>
-    );
-  } catch (error) {
-    console.error("Error fetching project:", error);
-    return notFound();
+  if (!project) {
+    return null;
   }
+
+  return <div>{/* Your project page content */}</div>;
 }
 
-export async function generateStaticParams() {
-  const query = groq`*[_type == "project"] {
-    "slug": slug.current
-  }`;
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = params;
 
-  const projects = await client.fetch<{ slug: string }[]>(query);
+  const project = await client.fetch(
+    `
+    *[_type == "project" && slug.current == $slug][0] {
+      title,
+      description
+    }
+  `,
+    { slug }
+  );
 
-  return projects.map((project) => ({
-    slug: project.slug,
-  }));
+  return {
+    title: project?.title || "Project Not Found",
+    description: project?.description || "Project details",
+  };
 }
