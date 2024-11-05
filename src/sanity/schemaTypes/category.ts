@@ -16,12 +16,6 @@ export default {
       options: {
         source: "title",
         maxLength: 96,
-        slugify: (input: string) =>
-          input
-            .toLowerCase()
-            .replace(/\s+/g, "-")
-            .replace(/[^\w-]+/g, "")
-            .slice(0, 96),
       },
       validation: (Rule: any) => Rule.required(),
     },

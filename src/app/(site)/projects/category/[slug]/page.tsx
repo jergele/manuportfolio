@@ -1,90 +1,86 @@
 import { client } from "@/app/lib/sanity";
 import ProjectGrid from "@/app/components/ProjectGrid";
-import { Project } from "@/app/types";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { use } from "react";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
+import { groq } from "next-sanity";
+import { Project } from "@/app/types";
 
-// Validate the slug parameter
-function validateSlug(slug: string | undefined): slug is string {
-  return typeof slug === 'string' && slug.length > 0;
+interface Props {
+  params: { slug: string };
 }
 
-// Fetch data component
-async function CategoryContent({ slug }: { slug: string }) {
-  try {
-    const [projects, category] = await Promise.all([
-      client.fetch(
-        `*[_type == "project" && category->slug.current == $slug] {
-          _id,
-          title,
-          slug,
-          mainImage,
-          year,
-          description,
-          category->{
-            _id,
-            title,
-            slug
-          },
-          images[] {
-            image,
-            caption
-          }
-        }`,
-        { slug }
-      ),
-      client.fetch(
-        `*[_type == "category" && slug.current == $slug][0] {
-          _id,
-          title,
-          slug
-        }`,
-        { slug }
-      ),
-    ]);
+export default async function CategoryPage({ params }: Props) {
+  const { slug } = params;
 
-    if (!category) return notFound();
+  const query = groq`
+    *[_type == "category" && slug.current == $slug][0] {
+      _id,
+      title,
+      "projects": *[_type == "project" && references(^._id)] {
+        _id,
+        title,
+        "slug": slug.current,
+        mainImage,
+        "year": coalesce(year, "N/A"),
+        description,
+        images,
+        category->{
+          _id,
+          title,
+          "slug": slug.current
+        }
+      }
+    }
+  `;
+
+  try {
+    const category = await client.fetch(query, { slug });
+
+    if (!category) {
+      return notFound();
+    }
+
+    const transformedProjects = category.projects.map((project: any) => ({
+      ...project,
+      year: String(project.year || "N/A"),
+      slug: {
+        current: project.slug,
+      },
+    }));
 
     return (
-      <div className="pt-14 px-8">
-        <ProjectGrid projects={projects} />
-      </div>
+      <main className="pt-14 px-8">
+        <h1 className="text-3xl ps-2 border-b border-gray-800 pb-2 text-gray-800">
+          {category.title}
+        </h1>
+        <div className="mt-8">
+          <ProjectGrid projects={transformedProjects} />
+        </div>
+      </main>
     );
   } catch (error) {
-    console.error("Error in CategoryContent:", error);
+    console.error("Error fetching category:", error);
     return notFound();
   }
 }
 
-export default function CategoryPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
-  const resolvedParams = use(params);
-  
-  if (!validateSlug(resolvedParams?.slug)) {
-    return notFound();
-  }
+export const dynamic = "force-static";
+export const revalidate = 3600; // Revalidate every hour
 
-  return (
-    <Suspense fallback={<LoadingSpinner />}>
-      <CategoryContent slug={resolvedParams.slug} />
-    </Suspense>
-  );
-}
-
-// Pre-fetch paths at build time
 export async function generateStaticParams() {
-  const categories = await client.fetch(`
-    *[_type == "category"] {
-      "slug": slug.current
-    }
-  `);
+  try {
+    const categories = await client.fetch<{ slug: string }[]>(groq`
+      *[_type == "category"] {
+        "slug": slug.current
+      }
+    `);
 
-  return categories.map((category: { slug: string }) => ({
-    slug: category.slug,
-  }));
+    return categories.map((category) => ({
+      slug: category.slug,
+    }));
+  } catch (error) {
+    console.error("Error generating static params:", error);
+    return [];
+  }
 }
