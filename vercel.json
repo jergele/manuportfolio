@@ -1,23 +1,7 @@
 {
-  "framework": "nextjs",
+  "version": 2,
   "buildCommand": "next build",
   "installCommand": "npm install",
-  "outputDirectory": ".next",
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/"
-    }
-  ],
-  "build": {
-    "env": {
-      "NEXT_TELEMETRY_DISABLED": "1"
-    }
-  },
-  "builds": [
-    {
-      "src": "src/app/**/*.{js,jsx,ts,tsx}",
-      "use": "@vercel/next"
-    }
-  ]
+  "framework": "nextjs",
+  "outputDirectory": ".next"
 }
