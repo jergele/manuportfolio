@@ -8,6 +8,8 @@ type Props = {
   width?: number;
   quality?: number;
   sizes?: string;
+  priority?: boolean;
+  isCard?: boolean;
 };
 
 export default function OptimizedImage({
@@ -17,6 +19,8 @@ export default function OptimizedImage({
   width = 800,
   quality = 75,
   sizes = "100vw",
+  priority = false,
+  isCard = false,
 }: Props) {
   const imageUrl = urlFor(image).width(width).quality(quality).url();
 
@@ -26,9 +30,10 @@ export default function OptimizedImage({
       alt={alt}
       className={className}
       width={width}
-      height={width} // You might want to adjust this based on your aspect ratio
+      height={width}
       quality={quality}
       sizes={sizes}
+      priority={priority}
     />
   );
 }
