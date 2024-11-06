@@ -3,7 +3,16 @@ import ProjectGrid from "../../components/ProjectGrid";
 import { groq } from "next-sanity";
 import { Category, Project } from "../../../types";
 
-export default async function ProjectsPage() {
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
+type Params = Promise<{}>;
+
+export default async function ProjectsPage(props: {
+  params: Params;
+  searchParams: SearchParams;
+}) {
+  const params = await props.params;
+  const searchParams = await props.searchParams;
+
   // First fetch all categories
   const categoriesQuery = groq`
     *[_type == "category"] {
