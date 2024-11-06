@@ -1,9 +1,7 @@
 import { client } from "@/app/lib/sanity";
-import { groq } from "next-sanity";
-import OptimizedImage from "@/app/components/OptimizedImage";
-import Link from "next/link";
 import ProjectGrid from "@/app/components/ProjectGrid";
-
+import { groq } from "next-sanity";
+import Link from "next/link";
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 type Params = Promise<{}>;
 
