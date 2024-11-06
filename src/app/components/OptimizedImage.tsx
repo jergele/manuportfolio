@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { urlFor } from "@/app/lib/sanity";
+import { urlFor } from "../lib/sanity";
 
 type Props = {
   image: any;

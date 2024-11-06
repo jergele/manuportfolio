@@ -1,4 +1,4 @@
-import { Project } from "@/app/types";
+import { Project } from "../../types";
 import { Metadata } from "next";
 
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;

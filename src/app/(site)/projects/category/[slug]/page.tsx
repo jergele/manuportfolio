@@ -1,5 +1,5 @@
-import { client } from "@/app/lib/sanity";
-import { Category, Project } from "@/app/types";
+import { client } from "../../../../lib/sanity";
+import { Category, Project } from "../../../../../app/types";
 import { Metadata } from "next";
 
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;

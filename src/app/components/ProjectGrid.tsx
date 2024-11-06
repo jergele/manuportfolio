@@ -1,6 +1,6 @@
 "use client";
 
-import { Project } from "@/app/types";
+import { Project } from "../types";
 import OptimizedImage from "./OptimizedImage";
 import { useState, useEffect, useCallback } from "react";
 
