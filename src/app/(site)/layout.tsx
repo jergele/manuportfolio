@@ -3,8 +3,10 @@ import Sidebar from "../../app/components/Sidebar";
 import LoadingSpinner from "../../app/components/LoadingSpinner";
 import { Suspense } from "react";
 
-type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
-type Params = Promise<{}>;
+// Updated Props type for Next.js 15 layout
+type LayoutProps = {
+  children: React.ReactNode;
+};
 
 async function getCategories() {
   const categories = await client.fetch(
@@ -17,20 +19,14 @@ async function getCategories() {
   return categories;
 }
 
-export default async function SiteLayout(props: {
-  children: React.ReactNode;
-  params: Params;
-  searchParams: SearchParams;
-}) {
-  const params = await props.params;
-  const searchParams = await props.searchParams;
+export default async function SiteLayout({ children }: LayoutProps) {
   const categories = await getCategories();
 
   return (
     <div className="flex min-h-screen bg-gray-50">
       <Sidebar categories={categories} />
       <main className="flex-1">
-        <Suspense fallback={<LoadingSpinner />}>{props.children}</Suspense>
+        <Suspense fallback={<LoadingSpinner />}>{children}</Suspense>
       </main>
     </div>
   );
