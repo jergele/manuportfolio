@@ -4,7 +4,6 @@ import LoadingSpinner from "../../app/components/LoadingSpinner";
 import { Suspense } from "react";
 import "../globals.css";
 
-// Updated Props type for Next.js 15 layout
 type LayoutProps = {
   children: React.ReactNode;
 };
@@ -25,11 +24,19 @@ export default async function SiteLayout({ children }: LayoutProps) {
 
   return (
     <html lang="en">
-      <body>
-        <div className="flex min-h-screen bg-gray-50">
-          <Sidebar categories={categories} />
-          <main className="flex-1">
-            <Suspense fallback={<LoadingSpinner />}>{children}</Suspense>
+      <head>
+        <title>Manu Alastalo Portfolio</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </head>
+      <body className="bg-gray-50">
+        <div className="min-h-screen flex">
+          <aside className="w-64 min-h-screen">
+            <Sidebar categories={categories} />
+          </aside>
+          <main className="flex-1 overflow-auto">
+            <div className="container mx-auto px-4 py-8">
+              <Suspense fallback={<LoadingSpinner />}>{children}</Suspense>
+            </div>
           </main>
         </div>
       </body>
