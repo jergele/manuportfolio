@@ -1,9 +1,9 @@
 import { createClient } from "@sanity/client";
 import { groq } from "next-sanity";
-import { Project } from "@/types/Project";
-import { Category } from "@/types/Category";
 import clientConfig from "@/sanity/config/client-config";
 import imageUrlBuilder from "@sanity/image-url";
+import { Project } from "../types/Project";
+import { Category } from "../types/Category";
 
 export const client = createClient(clientConfig);
 
