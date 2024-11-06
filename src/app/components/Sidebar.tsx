@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { client } from "@/lib/sanity";
-import type { Category } from "@/app/types";
+import { client } from "../lib/sanity";
+import type { Category } from "../types";
 
 export default function Sidebar() {
   const pathname = usePathname();
