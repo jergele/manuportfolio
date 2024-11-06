@@ -3,14 +3,15 @@ import ProjectGrid from "../../../../components/ProjectGrid";
 import { groq } from "next-sanity";
 import { notFound } from "next/navigation";
 
-interface Props {
-  params: {
-    slug: string;
-  };
-}
+// Updated Props type for Next.js 15
+type Props = {
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};
 
-export default async function CategoryPage({ params }: Props) {
-  const { slug } = await Promise.resolve(params);
+export default async function CategoryPage(props: Props) {
+  // Await the params
+  const { slug } = await props.params;
 
   const query = groq`
     *[_type == "project" && category->slug.current == $slug] | order(_createdAt desc) {
