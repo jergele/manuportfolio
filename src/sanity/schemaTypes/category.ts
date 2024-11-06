@@ -1,6 +1,6 @@
-const category = {
+export default {
   name: "category",
-  title: "Category",
+  title: "Categories",
   type: "document",
   fields: [
     {
@@ -14,9 +14,8 @@ const category = {
       type: "slug",
       options: {
         source: "title",
+        maxLength: 96,
       },
     },
   ],
 };
-
-export default category;

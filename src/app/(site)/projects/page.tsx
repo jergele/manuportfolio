@@ -1,25 +1,67 @@
-import { Project } from "../../types";
-import { Metadata } from "next";
+import client from "../../../lib/sanity.js";
+import ProjectGrid from "../../components/ProjectGrid";
+import { groq } from "next-sanity";
+import { Category, Project } from "../../../types";
 
-type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
-type Params = Promise<{}>;
+export default async function ProjectsPage() {
+  // First fetch all categories
+  const categoriesQuery = groq`
+    *[_type == "category"] {
+      _id,
+      title,
+      "slug": slug.current
+    }
+  `;
 
-export default async function Page(props: {
-  params: Params;
-  searchParams: SearchParams;
-}) {
-  const params = await props.params;
-  const searchParams = await props.searchParams;
+  // Then fetch all projects
+  const projectsQuery = groq`
+    *[_type == "project"] | order(_createdAt desc) {
+      _id,
+      title,
+      mainImage,
+      "slug": slug.current,
+      year,
+      description,
+      images,
+      category->{
+        _id,
+        title,
+        "slug": slug.current
+      }
+    }
+  `;
 
-  return <div>{/* Your projects page content */}</div>;
-}
+  const [categories, allProjects] = await Promise.all([
+    client.fetch<Category[]>(categoriesQuery),
+    client.fetch<Project[]>(projectsQuery),
+  ]);
 
-export async function generateMetadata(props: {
-  params: Params;
-  searchParams: SearchParams;
-}): Promise<Metadata> {
-  return {
-    title: "Projects",
-    description: "Browse all projects",
-  };
+  // Group projects by category
+  const projectsByCategory = categories.map((category: Category) => ({
+    ...category,
+    projects: allProjects.filter(
+      (project: Project) => project.category?._id === category._id
+    ),
+  }));
+
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-4xl font-bold mb-12 text-center">All Projects</h1>
+
+      {projectsByCategory.map((category) => (
+        <div key={category._id} className="mb-16">
+          <h2 className="text-2xl font-semibold mb-6 text-gray-800">
+            {category.title}
+          </h2>
+          {category.projects.length > 0 ? (
+            <ProjectGrid projects={category.projects} />
+          ) : (
+            <p className="text-gray-500 italic">
+              No projects in this category yet.
+            </p>
+          )}
+        </div>
+      ))}
+    </div>
+  );
 }

@@ -1,7 +1,4 @@
-import { type SchemaTypeDefinition } from "sanity";
-import category from "./category";
 import project from "./project";
+import category from "./category";
 
-export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [category, project],
-};
+export const schemaTypes = [project, category];

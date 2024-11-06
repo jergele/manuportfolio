@@ -1,6 +1,6 @@
 "use client";
 
-import { Project } from "../types";
+import { Project } from "../../types";
 import OptimizedImage from "./OptimizedImage";
 import { useState, useEffect, useCallback } from "react";
 
@@ -153,20 +153,22 @@ export default function ProjectGrid({ projects = [] }: ProjectGridProps) {
 
               {/* Gallery grid */}
               {selectedProject.images && selectedProject.images.length > 0 ? (
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {selectedProject.images.map((img, index) => (
                     <div key={index} className="space-y-3">
-                      <div className="relative w-full">
+                      <div className="relative w-full flex justify-center">
                         <OptimizedImage
-                          image={img.image}
+                          image={img.image || img}
                           alt={img.caption || `Gallery image ${index + 1}`}
-                          className="w-full"
-                          width={1200}
-                          sizes="(max-width: 768px) 100vw, 50vw"
+                          className="w-full h-auto"
+                          width={800}
+                          sizes="(min-width: 768px) 50vw, 100vw"
+                          priority={index === 0}
+                          isCard={false}
                         />
                       </div>
                       {img.caption && (
-                        <p className="text-sm text-gray-600 px-1">
+                        <p className="text-sm text-gray-600 mt-2 text-center">
                           {img.caption}
                         </p>
                       )}

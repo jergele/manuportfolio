@@ -1,6 +1,6 @@
-import { client } from "../lib/sanity";
-import Sidebar from "../components/Sidebar";
-import LoadingSpinner from "../components/LoadingSpinner";
+import client from "../../lib/sanity.js";
+import Sidebar from "../../app/components/Sidebar";
+import LoadingSpinner from "../../app/components/LoadingSpinner";
 import { Suspense } from "react";
 
 async function getCategories() {

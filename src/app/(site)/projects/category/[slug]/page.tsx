@@ -1,60 +1,68 @@
-import { client } from "../../../../lib/sanity";
-import { Category, Project } from "../../../../../app/types";
-import { Metadata } from "next";
+import client from "../../../../../lib/sanity.js";
+import ProjectGrid from "../../../../components/ProjectGrid";
+import { groq } from "next-sanity";
+import { notFound } from "next/navigation";
 
-type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
-type Params = Promise<{ slug: string }>;
+interface Props {
+  params: {
+    slug: string;
+  };
+}
 
-export default async function Page(props: {
-  params: Params;
-  searchParams: SearchParams;
-}) {
-  const params = await props.params;
-  const { slug } = params;
+export default async function CategoryPage({ params }: Props) {
+  const { slug } = await Promise.resolve(params);
 
-  const category = await client.fetch<Category>(
-    `*[_type == "category" && slug.current == $slug][0]`
-  );
-
-  if (!category) {
-    return null;
-  }
-
-  const projects = await client.fetch<Project[]>(
-    `*[_type == "project" && category._ref == $categoryId] {
+  const query = groq`
+    *[_type == "project" && category->slug.current == $slug] | order(_createdAt desc) {
       _id,
       title,
-      description,
-      year,
+      mainImage,
       "slug": slug.current,
-      images[] {
-        "image": image.asset->,
-        caption
-      },
+      year,
+      description,
+      images,
       category->{
+        _id,
         title,
         "slug": slug.current
       }
-    }`,
-    { categoryId: category._id }
-  );
+    }
+  `;
 
-  return <div>{/* Your category page content */}</div>;
+  const projects = await client.fetch(query, { slug });
+
+  if (!projects || projects.length === 0) {
+    notFound();
+  }
+
+  // Get category title
+  const categoryQuery = groq`
+    *[_type == "category" && slug.current == $slug][0] {
+      title
+    }
+  `;
+  const category = await client.fetch(categoryQuery, { slug });
+
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-8">
+        {category?.title || "Category"}
+      </h1>
+      <ProjectGrid projects={projects} />
+    </div>
+  );
 }
 
-export async function generateMetadata(props: {
-  params: Params;
-  searchParams: SearchParams;
-}): Promise<Metadata> {
-  const params = await props.params;
-  const { slug } = params;
+// Generate static params for all categories
+export async function generateStaticParams() {
+  const query = groq`
+    *[_type == "category"] {
+      "slug": slug.current
+    }
+  `;
 
-  const category = await client.fetch<Category>(
-    `*[_type == "category" && slug.current == $slug][0]`
-  );
-
-  return {
-    title: category?.title || "Category Not Found",
-    description: `Projects in ${category?.title || "this category"}`,
-  };
+  const categories = await client.fetch(query);
+  return categories.map((category: { slug: string }) => ({
+    slug: category.slug,
+  }));
 }

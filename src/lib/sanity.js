@@ -1,20 +1,28 @@
-import { defineConfig } from "sanity";
-import { structureTool } from "sanity/structure";
-import { visionTool } from "@sanity/vision";
-import { schemaTypes } from "./schemaTypes";
+import { createClient } from "@sanity/client";
+import imageUrlBuilder from "@sanity/image-url";
+import config from "../sanity/config/client-config";
 
-export default defineConfig({
-  name: "default",
-  title: "portfolio-2024",
+// Set up client for fetching data in the getProps page functions
+export const client = createClient(config);
 
-  projectId: "your-project-id",
-  dataset: "production",
+// Set up image builder
+const builder = imageUrlBuilder(client);
 
-  plugins: [structureTool(), visionTool()],
+export function urlFor(source) {
+  if (!source) return "";
 
-  schema: {
-    types: schemaTypes,
-  },
+  // Handle image object with caption
+  if (source.image && source.image.asset) {
+    return builder.image(source.image).fit("max");
+  }
 
-  basePath: "/studio",
-});
+  // Handle direct image reference
+  if (source.asset) {
+    return builder.image(source).fit("max");
+  }
+
+  // Handle raw asset reference
+  return builder.image(source).fit("max");
+}
+
+export default client;
