@@ -22,12 +22,14 @@ export default async function SiteLayout({ children }: LayoutProps) {
   const categories = await getCategories();
 
   return (
-    <div className="min-h-screen flex">
-      <aside className="fixed top-0 left-0 h-full w-64 bg-white shadow-lg z-10">
-        <Sidebar categories={categories} />
+    <div className="flex min-h-screen">
+      <aside className="fixed inset-y-0 left-0 w-64 bg-white shadow-lg z-10 overflow-y-auto">
+        <nav className="sticky top-0">
+          <Sidebar categories={categories} />
+        </nav>
       </aside>
       <main className="flex-1 ml-64">
-        <div className="container mx-auto px-4 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <Suspense fallback={<LoadingSpinner />}>{children}</Suspense>
         </div>
       </main>
