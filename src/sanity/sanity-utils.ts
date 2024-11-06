@@ -1,6 +1,6 @@
 import { createClient } from "@sanity/client";
 import { groq } from "next-sanity";
-import clientConfig from "@/sanity/config/client-config";
+import clientConfig from "../sanity/config/client-config";
 import imageUrlBuilder from "@sanity/image-url";
 import { Project } from "../types/Project";
 import { Category } from "../types/Category";
