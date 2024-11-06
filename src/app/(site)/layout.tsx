@@ -2,6 +2,7 @@ import client from "../../lib/sanity.js";
 import Sidebar from "../../app/components/Sidebar";
 import LoadingSpinner from "../../app/components/LoadingSpinner";
 import { Suspense } from "react";
+import "../globals.css";
 
 // Updated Props type for Next.js 15 layout
 type LayoutProps = {
@@ -23,11 +24,15 @@ export default async function SiteLayout({ children }: LayoutProps) {
   const categories = await getCategories();
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      <Sidebar categories={categories} />
-      <main className="flex-1">
-        <Suspense fallback={<LoadingSpinner />}>{children}</Suspense>
-      </main>
-    </div>
+    <html lang="en">
+      <body>
+        <div className="flex min-h-screen bg-gray-50">
+          <Sidebar categories={categories} />
+          <main className="flex-1">
+            <Suspense fallback={<LoadingSpinner />}>{children}</Suspense>
+          </main>
+        </div>
+      </body>
+    </html>
   );
 }
