@@ -26,12 +26,12 @@ export default function Sidebar() {
   }, []);
 
   return (
-    <aside className="fixed left-0 top-0 z-40 h-screen w-[300px] border-r border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
+    <aside className="fixed left-0 top-0 z-40 h-screen w-[300px] border-r border-gray-200 bg-gray-100 p-8">
       <div className="flex h-full flex-col justify-between">
         <div>
           <Link
             href="/"
-            className="mb-8 block text-xl font-bold text-white"
+            className="mb-8 block text-xl font-bold text-gray-800"
             tabIndex={0}
           >
             Manu Alastalo
@@ -40,8 +40,8 @@ export default function Sidebar() {
           <nav className="space-y-2">
             <Link
               href="/projects"
-              className={`block rounded-lg p-2 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800 text-white${
-                pathname === "/projects" ? "bg-gray-100 dark:bg-gray-800" : ""
+              className={`block rounded-lg p-2 transition-colors hover:bg-gray-200 ${
+                pathname === "/projects" ? "bg-gray-200" : ""
               }`}
               tabIndex={0}
             >
@@ -52,9 +52,9 @@ export default function Sidebar() {
               <Link
                 key={category._id}
                 href={`/projects/category/${category.slug}`}
-                className={`block rounded-lg p-2 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800 text-white ${
+                className={`block rounded-lg p-2 transition-colors hover:bg-gray-200 ${
                   pathname === `/projects/category/${category.slug}`
-                    ? "bg-gray-100 dark:bg-gray-800"
+                    ? "bg-gray-200"
                     : ""
                 }`}
                 tabIndex={0}
@@ -65,7 +65,7 @@ export default function Sidebar() {
           </nav>
         </div>
 
-        <footer className="text-sm text-gray-500 dark:text-gray-400">
+        <footer className="text-sm text-gray-500">
           <p>© {new Date().getFullYear()} Manu Alastalo</p>
         </footer>
       </div>
