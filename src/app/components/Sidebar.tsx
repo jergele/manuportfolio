@@ -1,159 +1,74 @@
 "use client";
-import React, { useState } from "react";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
-import { Category } from "../types";
+import { useEffect, useState } from "react";
+import { client } from "@/lib/sanity";
+import type { Category } from "@/app/types";
 
-type Props = {
-  categories: Category[];
-};
+export default function Sidebar() {
+  const pathname = usePathname();
+  const [categories, setCategories] = useState<Category[]>([]);
 
-export default function Sidebar({ categories }: Props) {
-  const pathname = usePathname() || '';
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const data = await client.fetch<Category[]>(
+        `*[_type == "category"] {
+          _id,
+          title,
+          "slug": slug.current
+        }`
+      );
+      setCategories(data);
+    };
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
-  const isActive = (path: string) => {
-    // For homepage
-    if (path === '/') {
-      return pathname === '/';
-    }
-
-    // For "Taideprojektit" header
-    if (path === 'taideprojektit') {
-      return pathname.startsWith('/projects');
-    }
-
-    // For "Kaikki työt"
-    if (path === '/projects') {
-      return pathname === '/projects';
-    }
-
-    // For category pages
-    if (path.startsWith('/projects/category/')) {
-      return pathname === path;
-    }
-
-    // For other pages (about, contact)
-    return pathname === path;
-  };
+    fetchCategories();
+  }, []);
 
   return (
-    <>
-      {/* Mobile Menu Button */}
-      <button
-        onClick={toggleMenu}
-        className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-md hover:bg-gray-100"
-        aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-      >
-        {isMenuOpen ? (
-          <X size={24} className="text-gray-900" />
-        ) : (
-          <Menu size={24} className="text-gray-900" />
-        )}
-      </button>
+    <aside className="fixed left-0 top-0 z-40 h-screen w-[300px] border-r border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
+      <div className="flex h-full flex-col justify-between">
+        <div>
+          <Link
+            href="/"
+            className="mb-8 block text-xl font-bold text-white"
+            tabIndex={0}
+          >
+            Manu Alastalo
+          </Link>
 
-      {/* Overlay for mobile menu */}
-      {isMenuOpen && (
-        <div
-          className="lg:hidden fixed inset-0 bg-black/50 z-30"
-          onClick={() => setIsMenuOpen(false)}
-        />
-      )}
-
-      {/* Navigation */}
-      <nav
-        className={`
-          fixed lg:static w-64 h-full bg-gray-50 z-40 transition-transform duration-300
-          ${isMenuOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
-          pt-12 px-12
-        `}
-      >
-        <Link
-          href="/"
-          className={`block text-3xl font-light mb-12 transition-colors tracking-wide whitespace-nowrap ${
-            isActive('/') 
-              ? "text-black" 
-              : "text-gray-900 hover:text-black"
-          }`}
-          aria-label="Go to homepage"
-          onClick={() => setIsMenuOpen(false)}
-        >
-          Manu Alastalo
-        </Link>
-
-        <div className="space-y-6 ml-4">
-          <div>
+          <nav className="space-y-2">
             <Link
               href="/projects"
-              className={`relative inline-block font-light text-base tracking-wide mb-4 ${
-                isActive('taideprojektit')
-                  ? "text-black after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px] after:bg-black"
-                  : "text-gray-700 hover:text-black"
+              className={`block rounded-lg p-2 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800 text-white${
+                pathname === "/projects" ? "bg-gray-100 dark:bg-gray-800" : ""
               }`}
-              onClick={() => setIsMenuOpen(false)}
+              tabIndex={0}
             >
-              Taideprojektit
+              All Projects
             </Link>
-            <div className="pl-4 space-y-3">
+
+            {categories.map((category) => (
               <Link
-                href="/projects"
-                className={`relative inline-block text-base font-light tracking-wide ${
-                  isActive('/projects')
-                    ? "text-black after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px] after:bg-black"
-                    : "text-gray-700 hover:text-black"
+                key={category._id}
+                href={`/projects/category/${category.slug}`}
+                className={`block rounded-lg p-2 transition-colors hover:bg-gray-100 dark:hover:bg-gray-800 text-white ${
+                  pathname === `/projects/category/${category.slug}`
+                    ? "bg-gray-100 dark:bg-gray-800"
+                    : ""
                 }`}
-                onClick={() => setIsMenuOpen(false)}
+                tabIndex={0}
               >
-                Kaikki työt
+                {category.title}
               </Link>
-              {categories.map((category) => {
-                const categoryUrl = `/projects/category/${category.slug.current}`;
-                return (
-                  <Link
-                    key={category._id}
-                    href={categoryUrl}
-                    className={`relative inline-block text-base font-light tracking-wide ${
-                      isActive(categoryUrl)
-                        ? "text-black after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px] after:bg-black"
-                        : "text-gray-700 hover:text-black"
-                    }`}
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    {category.title}
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-          <Link
-            href="/about"
-            className={`relative inline-block text-base font-light tracking-wide ${
-              isActive('/about')
-                ? "text-black after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px] after:bg-black"
-                : "text-gray-700 hover:text-black"
-            }`}
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Tietoja minusta
-          </Link>
-          <Link
-            href="/contact"
-            className={`relative inline-block text-base font-light tracking-wide ${
-              isActive('/contact')
-                ? "text-black after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1px] after:bg-black"
-                : "text-gray-700 hover:text-black"
-            }`}
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Ota yhteyttä
-          </Link>
+            ))}
+          </nav>
         </div>
-      </nav>
-    </>
+
+        <footer className="text-sm text-gray-500 dark:text-gray-400">
+          <p>© {new Date().getFullYear()} Manu Alastalo</p>
+        </footer>
+      </div>
+    </aside>
   );
 }

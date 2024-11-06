@@ -1,5 +1,5 @@
-import client from "../../../../../lib/sanity.js";
-import ProjectGrid from "../../../../components/ProjectGrid";
+import { client } from "../../../lib/sanity";
+import ProjectGrid from "../../../components/ProjectGrid";
 import { groq } from "next-sanity";
 import { notFound } from "next/navigation";
 

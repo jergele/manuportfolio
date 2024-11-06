@@ -1,7 +1,7 @@
-import client from "../../../lib/sanity.js";
-import ProjectGrid from "../../components/ProjectGrid";
+import { client } from "../lib/sanity";
+import ProjectGrid from "../components/ProjectGrid";
 import { groq } from "next-sanity";
-import { Category, Project } from "../../../types";
+import { Category, Project } from "../../types/index.js";
 
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 type Params = Promise<{}>;
