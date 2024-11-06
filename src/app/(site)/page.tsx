@@ -1,5 +1,5 @@
-import { client } from "@/app/lib/sanity";
-import ProjectGrid from "@/app/components/ProjectGrid";
+import { client } from "../lib/sanity";
+import ProjectGrid from "../components/ProjectGrid";
 import { groq } from "next-sanity";
 import Link from "next/link";
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;

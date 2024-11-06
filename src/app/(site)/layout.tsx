@@ -1,6 +1,6 @@
-import { client } from "@/app/lib/sanity";
-import Sidebar from "@/app/components/Sidebar";
-import LoadingSpinner from "@/app/components/LoadingSpinner";
+import { client } from "../lib/sanity";
+import Sidebar from "../components/Sidebar";
+import LoadingSpinner from "../components/LoadingSpinner";
 import { Suspense } from "react";
 
 async function getCategories() {
@@ -25,9 +25,7 @@ export default async function SiteLayout({
     <div className="flex min-h-screen bg-gray-50">
       <Sidebar categories={categories} />
       <main className="flex-1">
-        <Suspense fallback={<LoadingSpinner />}>
-          {children}
-        </Suspense>
+        <Suspense fallback={<LoadingSpinner />}>{children}</Suspense>
       </main>
     </div>
   );

@@ -1,6 +1,6 @@
 import { Metadata } from "next";
-import { client } from "@/app/lib/sanity";
-import { Project } from "@/app/types";
+import { client } from "../../../lib/sanity";
+import { Project } from "../../../types";
 import React from "react";
 
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
